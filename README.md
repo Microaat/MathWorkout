@@ -9,4 +9,6 @@ Each problem is displayed one at a time, with an input field for submitting answ
 The application includes a settings interface where users can configure problem count, select operations, and define minimum and maximum values for generated numbers. Changes can be applied or discarded before starting or continuing a session.
 
 ## Screenshots (Current Version)
-![Screenshot](screenshots/2.png)
+![Screenshot](screenshots/3.png)
+
+![Screenshot](screenshots/4.png)
