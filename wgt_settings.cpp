@@ -12,6 +12,10 @@ wgtSettings::wgtSettings(Settings *s, QWidget *parent) :
     ui->setupUi(this);
 
     on_btnApply_clicked();
+
+    ui->lblProblems->setVisible(false);
+    ui->spnProblems->setVisible(false);
+    ui->hsldProblems->setVisible(false);
 }
 
 wgtSettings::~wgtSettings(){

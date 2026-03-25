@@ -1,52 +1,32 @@
 #include "wgt_problem.h"
+#include "ui_wgt_problem.h"
 
-#include <QVBoxLayout>
-#include <QLabel>
-#include <QLineEdit>
-#include <QFont>
-#include <QDebug>
+#include <QValidator>
+#include <limits>
 
-wgtProblem::wgtProblem(Settings *s, QWidget *parent)
-    : QWidget{parent}, mSettings(s)
+wgtProblem::wgtProblem(Settings *s, QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::wgtProblem),
+    mSettings(s)
 {
-    Q_ASSERT(mSettings);
+    ui->setupUi(this);
+    setMaximumWidth(200);
+    setMinimumWidth(200);
 
-    auto alignment = Qt::AlignRight;
-    auto font = QFont();
-    auto width = 200;
+    ui->lblCheck->setText("");
+    ui->txtAnswer->setValidator(
+        new QIntValidator(
+            std::numeric_limits<int16_t>::lowest(),
+            std::numeric_limits<int16_t>::max(),
+            this
+    ));
 
-    font.setBold(true);
-    font.setPointSize(20);
-
-    auto *layout = new QVBoxLayout(this);
-    mProgress = new QLabel;
-    mCheck = new QLabel;
-    mQuestion = new QLabel;
-    mAnswer = new QLineEdit;
-
-    setMaximumWidth(180);
-    setMinimumWidth(180);
-
-    mQuestion->setFont(font);
-    font.setBold(false);
-    mAnswer->setFont(font);
-
-    mQuestion->setAlignment(alignment);
-    mAnswer->setAlignment(alignment);
-    //mCheck->setAlignment(alignment);
-
-    mQuestion->setMaximumWidth(width);
-    mAnswer->setMaximumWidth(width);
-
-    layout->addWidget(mProgress);
-    layout->addWidget(mQuestion);
-    layout->addWidget(mAnswer);
-    layout->addWidget(mCheck);
-    layout->addStretch();
-
-    //
-    connect(mAnswer, &QLineEdit::returnPressed, this, &wgtProblem::onAnswer);
+    connect(ui->txtAnswer, &QLineEdit::returnPressed, this, &wgtProblem::onAnswer);
     showProblem();
+}
+
+wgtProblem::~wgtProblem(){
+    delete ui;
 }
 
 void wgtProblem::showProblem(){
@@ -55,20 +35,24 @@ void wgtProblem::showProblem(){
         .arg(mProblem.lhs())
         .arg(mProblem.opStr())
         .arg(mProblem.rhs());
-    mQuestion->setText(question);
-    mAnswer->setText("");
+    ui->lblQuestion->setText(question);
+    ui->txtAnswer->setText("");
 }
 
 void wgtProblem::onAnswer(){
-    int answer = mAnswer->text().toInt();
+    int answer = ui->txtAnswer->text().toInt();
 
-    if(answer == mProblem.answer()) mCheck->setText("Correct");
-    else {
-        mCheck->setText(
-            QString("Incorrect.\nAnswer: %1")
-                .arg(mProblem.toString())
-        );
-    }
+    auto *check = ui->lblCheck;
+    if(answer == mProblem.answer()) check->setText("<font color='green'>Correct!</font><br>");
+    else check->setText(QString("<font color='#F00'>Incorrect</font><br>"));
+
+    check->setText(check->text() + mProblem.toString());
 
     showProblem();
+}
+
+void wgtProblem::on_btnRefresh_clicked(){
+    showProblem();
+    ui->lblCheck->setText("");
+    ui->txtAnswer->setFocus();
 }

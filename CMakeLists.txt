@@ -23,10 +23,11 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(MathWorkout
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        wgt_problem.h wgt_problem.cpp
+
         problem.h problem.cpp
         wgt_settings.h wgt_settings.cpp wgt_settings.ui
         settings.h settings.cpp
+        wgt_problem.h wgt_problem.cpp wgt_problem.ui
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET MathWorkout APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

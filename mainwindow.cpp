@@ -5,6 +5,7 @@
 #include "wgt_settings.h"
 
 #include <QHBoxLayout>
+#include <QFrame>
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -18,8 +19,13 @@ MainWindow::MainWindow(QWidget *parent)
     auto *layout = new QHBoxLayout(ui->centralwidget);
     mProblem = new wgtProblem(&mSettings);
     auto *settings = new wgtSettings(&mSettings);
+    auto *line = new QFrame;
+
+    line->setFrameShape(QFrame::VLine);
+    line->setFrameShadow(QFrame::Sunken);
 
     layout->addWidget(mProblem);
+    layout->addWidget(line);
     layout->addWidget(settings);
     //layout->addStretch();
 

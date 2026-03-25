@@ -5,29 +5,31 @@
 
 #include "problem.h"
 
-class QLabel;
-class QLineEdit;
+namespace Ui {
+class wgtProblem;
+}
+
 class Settings;
 
 class wgtProblem : public QWidget {
     Q_OBJECT
 
-QLabel *mProgress;
-QLabel *mCheck;
-QLabel *mQuestion;
-QLineEdit *mAnswer;
-
-Settings *mSettings;
-Problem mProblem;
-
 public:
     explicit wgtProblem(Settings *s, QWidget *parent = nullptr);
+    ~wgtProblem();
 
-    void showProblem();
     void onAnswer();
 
-signals:
+public slots:
+    void showProblem();
 
+private slots:
+    void on_btnRefresh_clicked();
+
+private:
+    Ui::wgtProblem *ui;
+    Problem mProblem;
+    Settings *mSettings;
 };
 
 #endif // WGT_PROBLEM_H
